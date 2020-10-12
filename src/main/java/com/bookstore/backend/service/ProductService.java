@@ -41,7 +41,10 @@ public class ProductService {
     }
 
     public ProductDto updateProduct(ProductDto dto) {
-        return null;
+        Product p = productRepository.findById(dto.getId()).orElseThrow(() -> new NotFoundException("No product with id " + dto.getId()));
+        p.setPrice(dto.getPrice());
+        p.setTitle(dto.getTitle());
+        return productMapper.productToDto(productRepository.save(p));
     }
 
 }

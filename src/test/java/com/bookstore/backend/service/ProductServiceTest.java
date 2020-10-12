@@ -49,4 +49,39 @@ public class ProductServiceTest {
         List<ProductDto> products = productService.getProducts();
         assertEquals(3, products.size());
     }
+
+    @Test
+    void shouldRetrieveProductDtoWhenValidIdIsProvided() {
+        // given
+        String name = "A name";
+        Double price = 10.2;
+        ProductDto dto = new ProductDto(null, name, price);
+        ProductDto dto2 = new ProductDto(null, "Other name", 3.0);
+        // when
+        productService.createProduct(dto2);
+        dto = productService.createProduct(dto);
+        // then
+        dto = productService.getProductDto(dto.getId());
+        assertEquals(name, dto.getTitle());
+        assertEquals(price, dto.getPrice());
+        assertNotNull(dto.getId());
+    }
+
+    @Test
+    void shouldUpdateProductWhenValidDataIsProvided() {
+        // given
+        String name = "A name";
+        Double price = 10.2;
+        ProductDto dto = new ProductDto(null, "Anything", 3.0);
+        dto = productService.createProduct(dto);
+        // when
+        dto.setPrice(price);
+        dto.setTitle(name);
+        productService.updateProduct(dto);
+        // then
+        dto = productService.getProductDto(dto.getId());
+        assertEquals(price, dto.getPrice());
+        assertEquals(name, dto.getTitle());
+
+    }
 }
