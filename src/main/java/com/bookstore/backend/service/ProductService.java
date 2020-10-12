@@ -29,7 +29,7 @@ public class ProductService {
     }
 
     public List<ProductDto> getProducts() {
-        return null;
+        return productMapper.productsListToDtoList(productRepository.findAll());
     }
 
     public ProductDto createProduct(ProductDto dto) {

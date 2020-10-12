@@ -10,6 +10,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -37,5 +40,13 @@ public class ProductServiceTest {
         Double price = 10.2;
         ProductDto dto = new ProductDto(9L, name, price);
         assertThrows(BadRequestException.class, () -> productService.createProduct(dto));
+    }
+
+    @Test
+    void shouldRetrieveAllSavedProducts() {
+        ProductDto dto = new ProductDto(null, "Anything", 1.0);
+        IntStream.range(0, 3).forEach(i -> productService.createProduct(dto));
+        List<ProductDto> products = productService.getProducts();
+        assertEquals(3, products.size());
     }
 }
