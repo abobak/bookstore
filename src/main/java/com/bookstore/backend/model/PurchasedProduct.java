@@ -19,8 +19,11 @@ public class PurchasedProduct {
     private Long id;
 
     @ManyToOne
-    private Product purchasedProduct;
+    private Product product;
 
     private Double purchasePrice;
+
+    @ManyToOne
+    private Purchase purchase;
 
 }

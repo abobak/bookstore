@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Order {
+public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Order {
 
     private LocalDateTime purchaseDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "purchase")
     private List<PurchasedProduct> purchasedProducts;
 
 }
