@@ -5,6 +5,9 @@ import com.bookstore.backend.model.Product;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProductMapperTest {
@@ -35,6 +38,12 @@ class ProductMapperTest {
     void shouldCorrectlyMapEntityToDto() {
         Product mapped = mapper.dtoToProduct(sourceDto);
         assertEquals(sourceProduct, mapped);
+    }
+
+    @Test
+    void shouldConvertListOfProductsToListOfDtos() {
+        List<ProductDto> dtos = mapper.productsListToDtoList(Arrays.asList(sourceProduct, sourceProduct));
+        dtos.forEach(dto -> assertEquals(sourceDto, dto));
     }
 
 }
