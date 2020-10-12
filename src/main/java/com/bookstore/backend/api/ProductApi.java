@@ -21,6 +21,4 @@ public interface ProductApi {
     @ApiOperation(value = "Update product")
     ProductDto updateProduct(ProductDto dto);
 
-    @ApiOperation(value = "Delete product")
-    void deleteProduct(Long id);
 }
