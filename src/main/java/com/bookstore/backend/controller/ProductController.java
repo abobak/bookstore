@@ -2,6 +2,7 @@ package com.bookstore.backend.controller;
 
 import com.bookstore.backend.api.ProductApi;
 import com.bookstore.backend.dto.ProductDto;
+import com.bookstore.backend.exception.BadRequestException;
 import com.bookstore.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,9 @@ public class ProductController implements ProductApi {
     @Override
     @PutMapping(path = "/api/v1/products/{productId}")
     public ProductDto updateProduct(@PathVariable Long productId, @RequestBody ProductDto dto) {
+        if (!productId.equals(dto.getId())) {
+            throw new BadRequestException("Changing id of existing product is not allowed");
+        }
         return productService.updateProduct(dto);
     }
 }

@@ -50,4 +50,26 @@ public class ProductControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldReturn400IfUserTriesToAlterIdOfProduct() throws Exception {
+        String jsonString = "{ \"id\": \"2\", \"title\": \"Anything\", \"price\": \"10.2\"}";
+        mvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/products/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn200IfUserTriesToAlterProductWithValidData() throws Exception {
+        String jsonString = "{ \"id\": \"2\", \"title\": \"Anything\", \"price\": \"10.2\"}";
+        mvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/products/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonString)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
