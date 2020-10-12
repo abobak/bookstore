@@ -29,7 +29,7 @@ public class ProductController implements ProductApi {
 
     @Override
     @PostMapping(path = "/api/v1/products")
-    public ProductDto createProduct(ProductDto dto) {
+    public ProductDto createProduct(@RequestBody ProductDto dto) {
         return productService.createProduct(dto);
     }
 
