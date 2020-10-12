@@ -19,6 +19,6 @@ public interface ProductApi {
     ProductDto createProduct(ProductDto dto);
 
     @ApiOperation(value = "Update product")
-    ProductDto updateProduct(ProductDto dto);
+    ProductDto updateProduct(Long productId, ProductDto dto);
 
 }
