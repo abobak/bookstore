@@ -1,7 +1,9 @@
 package com.bookstore.backend.service;
 
 import com.bookstore.backend.dto.PurchaseDto;
+import com.bookstore.backend.dto.PurchasedProductDto;
 import com.bookstore.backend.mapper.PurchaseMapper;
+import com.bookstore.backend.model.Purchase;
 import com.bookstore.backend.repository.PurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,12 @@ public class PurchaseService {
     }
 
     public List<PurchaseDto> viewPurchases(LocalDateTime from, LocalDateTime to) {
-        return null;
+        List<Purchase> purchases = purchaseRepository.findAllByPurchaseDateIsBetween(from, to);
+        return purchaseMapper.purchasesToDtos(purchases);
+    }
+
+    Double getTotal(PurchaseDto dto) {
+        return dto.getPurchasedProductDtos().stream().mapToDouble(PurchasedProductDto::getPurchasePrice).sum();
     }
 
 }

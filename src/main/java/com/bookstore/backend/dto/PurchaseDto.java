@@ -21,7 +21,6 @@ public class PurchaseDto {
 
     private List<PurchasedProductDto> purchasedProductDtos;
 
-    public Double getTotal() {
-        return purchasedProductDtos.stream().mapToDouble(PurchasedProductDto::getPurchasePrice).sum();
-    }
+    private Double total;
+
 }

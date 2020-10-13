@@ -25,6 +25,8 @@ public class Purchase {
 
     private LocalDateTime purchaseDate;
 
+    private Double total;
+
     @OneToMany(mappedBy = "purchase")
     private List<PurchasedProduct> purchasedProducts;
 
