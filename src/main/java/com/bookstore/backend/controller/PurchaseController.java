@@ -25,9 +25,9 @@ public class PurchaseController implements PurchaseApi {
 
     @Override
     @GetMapping(path = "/api/v1/purchases/{from}/{to}")
-    public List<PurchaseDto> listOrders(@PathVariable LocalDate from, @PathVariable LocalDate to) {
-        LocalDateTime fromDate = LocalDateTime.of(from, LocalTime.MIN);
-        LocalDateTime toDate = LocalDateTime.of(to, LocalTime.MAX);
+    public List<PurchaseDto> listOrders(@PathVariable String from, @PathVariable String to) {
+        LocalDateTime fromDate = LocalDateTime.of(LocalDate.parse(from), LocalTime.MIN);
+        LocalDateTime toDate = LocalDateTime.of(LocalDate.parse(to), LocalTime.MAX);
         return purchaseService.viewPurchases(fromDate, toDate);
     }
 }

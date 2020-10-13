@@ -10,6 +10,6 @@ public interface PurchaseApi {
 
     PurchaseDto placeOrder(PurchaseDto purchaseDto);
 
-    List<PurchaseDto> listOrders(LocalDate from, LocalDate to);
+    List<PurchaseDto> listOrders(String from, String to);
 
 }
