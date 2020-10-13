@@ -19,6 +19,9 @@ public class PurchasedProduct {
     private Long id;
 
     @Column
+    private Long productId;
+
+    @Column
     private String title;
 
     @Column

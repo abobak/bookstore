@@ -1,5 +1,6 @@
 package com.bookstore.backend.service;
 
+import com.bookstore.backend.dto.NewPurchaseDto;
 import com.bookstore.backend.dto.PurchaseDto;
 import com.bookstore.backend.dto.PurchasedProductDto;
 import com.bookstore.backend.mapper.ProductMapper;
@@ -44,14 +45,13 @@ public class PurchaseServiceTest {
 
     @Test
     void shouldCorrectlyCalculateTotalPrice() {
-        PurchaseDto dto = new PurchaseDto();
         Double purchasePrice = 11.2;
         Double expectedTotal = purchasePrice * 3;
-        dto.setPurchasedProductDtos(new LinkedList<>());
-        PurchasedProductDto productDto = new PurchasedProductDto();
-        productDto.setPurchasePrice(11.2);
-        IntStream.range(0, 3).forEach(i -> dto.getPurchasedProductDtos().add(productDto));
-        assertEquals(expectedTotal, purchaseService.getTotal(dto));
+        List<PurchasedProduct> products = new LinkedList<>();
+        PurchasedProduct p = new PurchasedProduct();
+        p.setPurchasePrice(purchasePrice);
+        IntStream.range(0, 3).forEach(i -> products.add(p));
+        assertEquals(expectedTotal, purchaseService.getTotal(products));
     }
 
     @Test
@@ -70,15 +70,14 @@ public class PurchaseServiceTest {
         // given
         Product p1 = new Product(null, "A book", 2.0);
         p1 = productRepository.save(p1);
-        PurchasedProductDto ppd = productMapper.productToPurchasedProductDto(p1);
-        PurchaseDto purchaseDto = new PurchaseDto();
-        purchaseDto.setEmail("buyer@frominternet.com");
-        purchaseDto.setPurchasedProductDtos(new LinkedList<>());
-        purchaseDto.getPurchasedProductDtos().add(ppd);
+        NewPurchaseDto newPurchaseDto = new NewPurchaseDto();
+        newPurchaseDto.setEmail("buyer@frominternet.com");
+        newPurchaseDto.setPurchasedProducts(new LinkedList<>());
+        newPurchaseDto.getPurchasedProducts().add(p1.getId());
         // when
-        purchaseDto = purchaseService.submitPurchase(purchaseDto);
+        PurchaseDto purchaseDto = purchaseService.submitPurchase(newPurchaseDto);
         // then
-        assertTrue(purchaseDto.getPurchasedProductDtos().contains(ppd));
+        assertTrue(purchaseDto.getPurchasedProductDtos().size() == 1);
     }
 
     private Purchase createPurchase(LocalDateTime purchaseDate) {

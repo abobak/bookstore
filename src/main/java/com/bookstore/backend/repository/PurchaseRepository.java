@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface PurchaseRepository extends CrudRepository<Purchase, Long>, JpaRepository<Purchase, Long> {
 
-    @Query("select p from Purchase p left join fetch p.purchasedProducts where p.purchaseDate >= :fromDate and p.purchaseDate <= :toDate")
+    @Query("select distinct p from Purchase p left join fetch p.purchasedProducts where p.purchaseDate >= :fromDate and p.purchaseDate <= :toDate")
     List<Purchase> findAllByPurchaseDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
 }

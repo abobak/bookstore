@@ -18,9 +18,16 @@ public interface ProductMapper {
 
     List<ProductDto> productsListToDtoList(List<Product> products);
 
+    @Mapping(target = "purchasePrice", source="price")
+    @Mapping(target = "productId", source = "source.id")
+    @Mapping(target = "id", ignore = true)
     PurchasedProduct productToPurchasedProduct(Product source);
 
+    List<PurchasedProduct> productsToPurchasedProducts(List<Product> products);
+
     @Mapping(target = "purchasePrice", source="price")
+    @Mapping(target = "productId", source = "source.id")
+    @Mapping(target = "id", ignore = true)
     PurchasedProductDto productToPurchasedProductDto(Product source);
 
     @Mapping(target = "title", source = "dto.title")

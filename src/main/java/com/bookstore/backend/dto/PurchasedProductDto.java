@@ -2,6 +2,8 @@ package com.bookstore.backend.dto;
 
 import lombok.*;
 
+import javax.persistence.Id;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -10,6 +12,8 @@ import lombok.*;
 public class PurchasedProductDto {
 
     private Long id;
+
+    private Long productId;
 
     private String title;
 

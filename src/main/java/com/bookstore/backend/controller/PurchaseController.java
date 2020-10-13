@@ -1,6 +1,7 @@
 package com.bookstore.backend.controller;
 
 import com.bookstore.backend.api.PurchaseApi;
+import com.bookstore.backend.dto.NewPurchaseDto;
 import com.bookstore.backend.dto.PurchaseDto;
 import com.bookstore.backend.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class PurchaseController implements PurchaseApi {
 
     @Override
     @PostMapping(path = "/api/v1/purchases")
-    public PurchaseDto placeOrder(@RequestBody PurchaseDto purchaseDto) {
-        return purchaseService.submitPurchase(purchaseDto);
+    public PurchaseDto placeOrder(@RequestBody NewPurchaseDto newPurchaseDto) {
+        return purchaseService.submitPurchase(newPurchaseDto);
     }
 
     @Override
