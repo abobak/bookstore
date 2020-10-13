@@ -2,6 +2,7 @@ package com.bookstore.backend.service;
 
 import com.bookstore.backend.dto.PurchaseDto;
 import com.bookstore.backend.dto.PurchasedProductDto;
+import com.bookstore.backend.mapper.ProductMapper;
 import com.bookstore.backend.mapper.PurchaseMapper;
 import com.bookstore.backend.model.Purchase;
 import com.bookstore.backend.repository.PurchaseRepository;
@@ -19,12 +20,20 @@ public class PurchaseService {
 
     private final PurchaseMapper purchaseMapper;
 
+    private final ProductMapper productMapper;
+
     public PurchaseDto submitPurchase(PurchaseDto purchaseDto) {
-        return null;
+        Purchase p = new Purchase();
+        p.setTotal(getTotal(purchaseDto));
+        p.setEmail(purchaseDto.getEmail());
+        p.setPurchasedProducts(productMapper.purchasedProductDtosToPurchasedProducts(purchaseDto.getPurchasedProductDtos()));
+        p.setPurchaseDate(LocalDateTime.now());
+        p = purchaseRepository.save(p);
+        return purchaseMapper.purchaseToDto(p);
     }
 
     public List<PurchaseDto> viewPurchases(LocalDateTime from, LocalDateTime to) {
-        List<Purchase> purchases = purchaseRepository.findAllByPurchaseDateIsBetween(from, to);
+        List<Purchase> purchases = purchaseRepository.findAllByPurchaseDateBetween(from, to);
         return purchaseMapper.purchasesToDtos(purchases);
     }
 
