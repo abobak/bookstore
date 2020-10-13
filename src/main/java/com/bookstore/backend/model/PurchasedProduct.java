@@ -18,9 +18,10 @@ public class PurchasedProduct {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @ManyToOne
-    private Product product;
+    @Column
+    private String title;
 
+    @Column
     private Double purchasePrice;
 
     @ManyToOne

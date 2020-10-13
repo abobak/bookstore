@@ -2,7 +2,11 @@ package com.bookstore.backend.service;
 
 import com.bookstore.backend.dto.PurchaseDto;
 import com.bookstore.backend.dto.PurchasedProductDto;
+import com.bookstore.backend.mapper.ProductMapper;
+import com.bookstore.backend.model.Product;
 import com.bookstore.backend.model.Purchase;
+import com.bookstore.backend.model.PurchasedProduct;
+import com.bookstore.backend.repository.ProductRepository;
 import com.bookstore.backend.repository.PurchaseRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +20,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -30,6 +36,12 @@ public class PurchaseServiceTest {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private ProductMapper productMapper;
+
     @Test
     void shouldCorrectlyCalculateTotalPrice() {
         PurchaseDto dto = new PurchaseDto();
@@ -38,9 +50,7 @@ public class PurchaseServiceTest {
         dto.setPurchasedProductDtos(new LinkedList<>());
         PurchasedProductDto productDto = new PurchasedProductDto();
         productDto.setPurchasePrice(11.2);
-        for (int i = 0; i < 3; i++) {
-            dto.getPurchasedProductDtos().add(productDto);
-        }
+        IntStream.range(0, 3).forEach(i -> dto.getPurchasedProductDtos().add(productDto));
         assertEquals(expectedTotal, purchaseService.getTotal(dto));
     }
 
@@ -53,6 +63,22 @@ public class PurchaseServiceTest {
         purchaseRepository.save(createPurchase(LocalDateTime.of(LocalDate.parse("2020-02-03"), LocalTime.of(0, 0, 0))));
         List<PurchaseDto> purchases = purchaseService.viewPurchases(fromDate, toDate);
         assertEquals(2, purchases.size());
+    }
+
+    @Test
+    void shouldPersistPurchaseWithPurchasedProducts() {
+        // given
+        Product p1 = new Product(null, "A book", 2.0);
+        p1 = productRepository.save(p1);
+        PurchasedProductDto ppd = productMapper.productToPurchasedProductDto(p1);
+        PurchaseDto purchaseDto = new PurchaseDto();
+        purchaseDto.setEmail("buyer@frominternet.com");
+        purchaseDto.setPurchasedProductDtos(new LinkedList<>());
+        purchaseDto.getPurchasedProductDtos().add(ppd);
+        // when
+        purchaseDto = purchaseService.submitPurchase(purchaseDto);
+        // then
+        assertTrue(purchaseDto.getPurchasedProductDtos().contains(ppd));
     }
 
     private Purchase createPurchase(LocalDateTime purchaseDate) {
